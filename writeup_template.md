@@ -42,21 +42,21 @@ You're reading it! and here is a link to my [project code](https://github.com/ud
 
 ####1. Provide a basic summary of the data set and identify where in your code the summary was done. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-The code for this step is contained in the second code cell of the IPython notebook.  
+The code for this step is contained in the third code cell of the IPython notebook.  
 
-I used the pandas library to calculate summary statistics of the traffic
+I used Numpy to calculate summary statistics of the traffic
 signs data set:
 
-* The size of training set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+* The size of training set is 34799
+* The size of test set is 12630
+* The shape of a traffic sign image is (32, 32, 3)
+* The number of unique classes/labels in the data set is 3
 
 ####2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
 
-The code for this step is contained in the third code cell of the IPython notebook.  
+The code for this step is contained in the second code cell of the IPython notebook.  
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a bar chart showing how many images of each category are included in the training set, sorted by the number. I draw this image in order to analyze if the training result is related to the size of training data.
 
 ![alt text][image1]
 
@@ -66,30 +66,20 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 The code for this step is contained in the fourth code cell of the IPython notebook.
 
-As a first step, I decided to convert the images to grayscale because ...
+As a first step, I decided to convert the images to grayscale because the intensity of different image may have imapact on the result
 
 Here is an example of a traffic sign image before and after grayscaling.
 
 ![alt text][image2]
 
-As a last step, I normalized the image data because ...
+As a last step, I normalized the image data to avoid the calculation result getting too large or too small, which will cause big calculation error
 
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
-The code for splitting the data into training and validation sets is contained in the fifth code cell of the IPython notebook.  
+The dataset seems changed that there is already a validation set. But if there were not one, we can split a validation from the training data. I would do it like this:
 
-To cross validate my model, I randomly split the training data into a training set and validation set. I did this by ...
-
-My final training set had X number of images. My validation set and test set had Y and Z number of images.
-
-The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data because ... To add more data to the the data set, I used the following techniques because ... 
-
-Here is an example of an original image and an augmented image:
-
-![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
-
+1. shuffle the training set.
+2. use the 80% of the data as traning data, and the rest be the validation data.
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -99,13 +89,24 @@ My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Input         		| 32x32x1 RGB image   							| 
+| Convolution 5x5     	| 1x1 stride, same padding, outputs 28x28x6 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
+| Dropout               | keep probability 1/2                          |
+| Max pooling	      	| 2x2 stride,  outputs 14x14x6  				|
+| Convolution 5x5	    | 1x1 stride, same padding, outputs 10x10x6     |
+| RELU                  |                                               |
+| Dropout               | keep probability 1/2                          |
+| Max pooling           | 2x2 stride, outputs 5x5x16                    |
+| Flatten               | outputs 400                                   |
+| Fully connected		| outputs 120        							|
+| RELU                  |                                               |
+| Dropout               | keep probability 1/2                          |
+| Fully connected       | outputs 84                                    |
+| RELU                  |                                               |
+| Dropout               | keep probability 1/2                          |
+| Fully connected       | outputs 43                                    |
+| Softmax				|           									|
 |						|												|
 |						|												|
  
@@ -115,7 +116,13 @@ My final model consisted of the following layers:
 
 The code for training the model is located in the eigth cell of the ipython notebook. 
 
-To train the model, I used an ....
+To train the model, I used the hyperparameters as following:
+
+1. learning rate: 0.001. I used 0.001 as the first trial, and tried to make bigger, 0.003, 0.005 and 0.01, and also tried to make it smaller, 0.0001, for example, and found that 0.0001 would be too slow that may take too much epochs, and the others to be too big that the result would not be that stable with the process moving on, for example, the validation accuracy would be 0.95 in the 180 epoch and suddenly down to 0.91 in the next epoch. So finally I decide to use 0.001, which is not that slow, and the result differences are kept in the range between [-0.001, 0.001]
+2. epochs: 200.
+3. batch size: 128
+4. dropout keep probability: 0.5
+
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
@@ -135,6 +142,9 @@ If an iterative approach was chosen:
 
 If a well known architecture was chosen:
 * What architecture was chosen?
+
+    I choose LeNet.
+
 * Why did you believe it would be relevant to the traffic sign application?
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
  
