@@ -1,10 +1,5 @@
 #**Traffic Sign Recognition** 
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
 
 **Build a Traffic Sign Recognition Project**
 
@@ -27,16 +22,17 @@ The goals / steps of this project are the following:
 [image6]: ./examples/placeholder.png "Traffic Sign 3"
 [image7]: ./examples/placeholder.png "Traffic Sign 4"
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
-
-## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
-
----
-###Writeup / README
-
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
-
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+[exploration]: ./chart-output/data.png
+[extra-0]: ./more-signs/0.jpg
+[extra-13]: ./more-signs/13.jpg
+[extra-14]: ./more-signs/14.jpg
+[extra-15]: ./more-signs/15.jpg
+[extra-37]: ./more-signs/37.jpg
+[0-chart]: ./chart-output/0-chart.png
+[13-chart]: ./chart-output/13-chart.png
+[14-chart]: ./chart-output/14-chart.png
+[15-chart]: ./chart-output/15-chart.png
+[37-chart]: ./chart-output/37-chart.png
 
 ###Data Set Summary & Exploration
 
@@ -58,7 +54,7 @@ The code for this step is contained in the second code cell of the IPython noteb
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how many images of each category are included in the training set, sorted by the number. I draw this image in order to analyze if the training result is related to the size of training data.
 
-![alt text][image1]
+![alt text][exploration]
 
 ###Design and Test a Model Architecture
 
@@ -67,10 +63,6 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 The code for this step is contained in the fourth code cell of the IPython notebook.
 
 As a first step, I decided to convert the images to grayscale because the intensity of different image may have imapact on the result
-
-Here is an example of a traffic sign image before and after grayscaling.
-
-![alt text][image2]
 
 As a last step, I normalized the image data to avoid the calculation result getting too large or too small, which will cause big calculation error
 
@@ -99,16 +91,14 @@ My final model consisted of the following layers:
 | Dropout               | keep probability 1/2                          |
 | Max pooling           | 2x2 stride, outputs 5x5x16                    |
 | Flatten               | outputs 400                                   |
-| Fully connected		| outputs 120        							|
+| Fully connected		| outputs 120                                    |
 | RELU                  |                                               |
 | Dropout               | keep probability 1/2                          |
 | Fully connected       | outputs 84                                    |
 | RELU                  |                                               |
 | Dropout               | keep probability 1/2                          |
 | Fully connected       | outputs 43                                    |
-| Softmax				|           									|
-|						|												|
-|						|												|
+| Softmax					 |					                                |           			
  
 
 
@@ -133,21 +123,13 @@ My final model results were:
 * validation set accuracy of ? 
 * test set accuracy of ?
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
-
-If a well known architecture was chosen:
-* What architecture was chosen?
-
-    I choose LeNet.
-
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+I choose LeNetn because it's a well know architecture for its good performance on handwriting classification.
  
+The result is:
+
+- accuracy on training set: 100%;
+- accuracy on validation set: 94%;
+- accuracy on test set: 93%
 
 ###Test a Model on New Images
 
@@ -155,10 +137,15 @@ If a well known architecture was chosen:
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][extra-0] 
+![alt text][extra-13] 
+![alt text][extra-14] 
+![alt text][extra-15] 
+![alt text][extra-37]
 
-The first image might be difficult to classify because ...
+The first image might be difficult to classify because its quantity in training data is small, and number "20" on it is also a reason to make it difficult to classify.
+
+For the third image, the word "stop" on it would make it difficult to classify.
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -168,28 +155,35 @@ Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Speed limit (20km/h)  | Roundabout mandatory							| 
+| Yield     			| Yield 										|
+| Go straight or left   | Go straight or left           				|
+| Stop	           		| Speed limit (50km/h)  		 				|
+| No vehicles       	| Keep right        							|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 2 of the 5 traffic signs, which gives an accuracy of 40%. 
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the first image, the model is relatively sure that this is a Roundabout mandatory (probability of 0.742), but the image is Speed limit (20km/h). The top five soft max probabilities were
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+![alt text][0-chart]
 
+For the second image, the model is very sure this is a Yield(probability of 1!), and the image is indeed a Yield. The top five soft max probabilities were:
 
-For the second image ... 
+![alt text][13-chart]
+
+For the third image, the model is also very sure this is a Go straight or left with probability of 1, and again it is right. The top five soft max probabilities were:
+
+![alt text][14-chart]
+
+For the fourth image, the model is very sure this is a Speed limit (50km/h) (probability of 0.942!), but this time it is wrong. The right answer is Stop. The top five soft max probabilities were:
+
+![alt text][15-chart]
+
+For the last image, the model is not very confident with its result of Keep right (probability of 0.342), and the right answer should be No vehicles. The top five soft max probabilities were:
+
+![alt text][37-chart]
